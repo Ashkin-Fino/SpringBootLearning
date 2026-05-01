@@ -47,4 +47,8 @@ public class TravelPackageService {
         packages.add(travelPackage);
         return travelPackage;
     }
+
+    public boolean deletePackageById(Long id) {
+        return packages.removeIf(p -> p.getId().equals(id));
+    }
 }
