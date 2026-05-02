@@ -25,8 +25,12 @@ public class TravelPackageService {
         return this.repository.findAll();
     }
 
-    public Optional<TravelPackage> getPackageById(Long id) {
-        return this.repository.findById(id);
+    public TravelPackage getPackageById(Long id) {
+        Optional<TravelPackage> travelPackage = this.repository.findById(id);
+        if (travelPackage.isEmpty()) {
+            throw new ResourceNotFoundException("Package not found with id: " + id);
+        }
+        return travelPackage.get();
     }
 
     public TravelPackage addPackage(TravelPackageRequestDTO request) {

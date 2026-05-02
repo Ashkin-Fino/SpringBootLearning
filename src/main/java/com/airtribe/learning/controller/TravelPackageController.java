@@ -48,17 +48,16 @@ public class TravelPackageController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TravelPackageResponseDTO> getPackageById(@PathVariable Long id) {
-        return travelPackageService.getPackageById(id)
-            .map(p -> new TravelPackageResponseDTO(
-                    p.getId(),
-                    p.getTitle(),
-                    p.getDescription(),
-                    p.getPrice(),
-                    p.getDuration(),
-                    p.getLocation()
-            ))
-            .map(ResponseEntity::ok) // 200 OK
-            .orElse(ResponseEntity.notFound().build()); // 404 Not Found
+        TravelPackage p = travelPackageService.getPackageById(id);
+        TravelPackageResponseDTO response = new TravelPackageResponseDTO(
+            p.getId(),
+            p.getTitle(),
+            p.getDescription(),
+            p.getPrice(),
+            p.getDuration(),
+            p.getLocation()
+        );
+        return ResponseEntity.status(200).body(response); // 200 OK
     }
 
     @PostMapping
