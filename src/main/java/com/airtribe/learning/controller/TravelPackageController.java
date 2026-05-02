@@ -43,7 +43,7 @@ public class TravelPackageController {
                 p.getLocation()
             )).toList();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response); // 200 OK
     }
 
     @GetMapping("/{id}")
@@ -57,8 +57,8 @@ public class TravelPackageController {
                     p.getDuration(),
                     p.getLocation()
             ))
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+            .map(ResponseEntity::ok) // 200 OK
+            .orElse(ResponseEntity.notFound().build()); // 404 Not Found
     }
 
     @PostMapping
@@ -72,18 +72,14 @@ public class TravelPackageController {
             createdTravelPackage.getDuration(),
             createdTravelPackage.getLocation()
         );
-        return ResponseEntity.status(201).body(response);
+        return ResponseEntity.status(201).body(response); // 201 Created
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePackage(@PathVariable Long id) {
 
-        boolean deleted = travelPackageService.deletePackageById(id);
+        travelPackageService.deletePackageById(id);
 
-        if (deleted) {
-            return ResponseEntity.noContent().build(); // 204
-        } else {
-            return ResponseEntity.notFound().build(); // 404
-        }
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 }

@@ -1,6 +1,5 @@
 package com.airtribe.learning.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.airtribe.learning.dto.TravelPackageRequestDTO;
+import com.airtribe.learning.exception.ResourceNotFoundException;
 import com.airtribe.learning.model.TravelPackage;
 import com.airtribe.learning.repository.TravelPackageRepository;
 
@@ -41,11 +41,10 @@ public class TravelPackageService {
         return travelPackage;
     }
 
-    public boolean deletePackageById(Long id) {
+    public void deletePackageById(Long id) {
         if (!this.repository.existsById(id)) {
-            return false;
+            throw new ResourceNotFoundException("Package not found with id: " + id);
         }
         repository.deleteById(id);
-        return true;
     }
 }
