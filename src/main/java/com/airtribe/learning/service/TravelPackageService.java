@@ -51,4 +51,18 @@ public class TravelPackageService {
         }
         repository.deleteById(id);
     }
+
+    public TravelPackage updatePackage(Long id, TravelPackageRequestDTO request) {
+        TravelPackage existing = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Package not found with id: " + id)
+            );
+        
+        existing.setTitle(request.getTitle());
+        existing.setDescription(request.getDescription());
+        existing.setPrice(request.getPrice());
+        existing.setDuration(request.getDuration());
+        existing.setLocation(request.getLocation());
+
+        return repository.save(existing);
+    }
 }

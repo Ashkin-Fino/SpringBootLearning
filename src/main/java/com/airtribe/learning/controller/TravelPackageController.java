@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,6 +73,23 @@ public class TravelPackageController {
             createdTravelPackage.getLocation()
         );
         return ResponseEntity.status(201).body(response); // 201 Created
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TravelPackageResponseDTO> updatePackage(@PathVariable Long id, @Valid @RequestBody TravelPackageRequestDTO request) {
+
+        TravelPackage updated = travelPackageService.updatePackage(id, request);
+
+        TravelPackageResponseDTO response = new TravelPackageResponseDTO(
+            updated.getId(),
+            updated.getTitle(),
+            updated.getDescription(),
+            updated.getPrice(),
+            updated.getDuration(),
+            updated.getLocation()
+        );
+
+        return ResponseEntity.status(200).body(response); // 200 OK
     }
 
     @DeleteMapping("/{id}")
