@@ -4,35 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.airtribe.learning.dto.TravelPackageRequestDTO;
 import com.airtribe.learning.model.TravelPackage;
+import com.airtribe.learning.repository.TravelPackageRepository;
 
 @Service
 public class TravelPackageService {
 
-    // In-memory list to store packages, replace with DB in real app
-    List<TravelPackage> packages = new ArrayList<>();
-    private Long idCounter = 1L;
+    private final TravelPackageRepository repository;
 
-    public TravelPackageService() {
-        // In a real application, inject a repository here
-        packages.add(new TravelPackage("Goa Trip",
-                "Enjoy beaches and nightlife", 15000, "3D 2N", "Goa"));
-
-        packages.add(new TravelPackage("Manali Trip",
-                "Mountain adventure", 20000, "5D 4N", "Manali"));
+    @Autowired
+    public TravelPackageService(TravelPackageRepository repository) {
+        this.repository = repository;
     }
 
     public List<TravelPackage> getAllPackages() {
-        return this.packages;
+        return this.repository.findAll();
     }
 
     public Optional<TravelPackage> getPackageById(Long id) {
-        return this.packages.stream()
-                .filter(pkg -> pkg.getId().equals(id))
-                .findFirst();
+        return this.repository.findById(id);
     }
 
     public TravelPackage addPackage(TravelPackageRequestDTO request) {
@@ -43,12 +37,15 @@ public class TravelPackageService {
             request.getDuration(),
             request.getLocation()
         );
-        travelPackage.setId(idCounter++);
-        packages.add(travelPackage);
+        this.repository.save(travelPackage);
         return travelPackage;
     }
 
     public boolean deletePackageById(Long id) {
-        return packages.removeIf(p -> p.getId().equals(id));
+        if (!this.repository.existsById(id)) {
+            return false;
+        }
+        repository.deleteById(id);
+        return true;
     }
 }
