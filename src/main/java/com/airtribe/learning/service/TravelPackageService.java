@@ -1,5 +1,6 @@
 package com.airtribe.learning.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,26 @@ public class TravelPackageService {
         existing.setLocation(request.getLocation());
 
         return repository.save(existing);
+    }
+
+    public TravelPackage patchPackage(Long id, Map<String, Object> updates) {
+
+        TravelPackage existing = this.repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Package not found with id: " + id)
+                );
+    
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "title" -> existing.setTitle((String) value);
+                case "description" -> existing.setDescription((String) value);
+                case "price" -> existing.setPrice(Double.parseDouble(value.toString()));
+                case "duration" -> existing.setDuration((String) value);
+                case "location" -> existing.setLocation((String) value);
+                default -> throw new IllegalArgumentException("Invalid field: " + key);
+            }
+        });
+    
+        return this.repository.save(existing);
     }
 }

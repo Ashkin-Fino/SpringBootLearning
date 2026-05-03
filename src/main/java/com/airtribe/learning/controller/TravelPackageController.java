@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -45,12 +46,12 @@ public class TravelPackageController {
         List<TravelPackageResponseDTO> content = page.getContent()
             .stream()
             .map(p -> new TravelPackageResponseDTO(
-                    p.getId(),
-                    p.getTitle(),
-                    p.getDescription(),
-                    p.getPrice(),
-                    p.getDuration(),
-                    p.getLocation()
+                p.getId(),
+                p.getTitle(),
+                p.getDescription(),
+                p.getPrice(),
+                p.getDuration(),
+                p.getLocation()
             ))
             .toList();
 
@@ -61,12 +62,12 @@ public class TravelPackageController {
         result.put("totalElements", page.getTotalElements());
         result.put("totalPages", page.getTotalPages());
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.status(200).body(result); // 200 OK
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TravelPackageResponseDTO> getPackageById(@PathVariable Long id) {
-        TravelPackage p = travelPackageService.getPackageById(id);
+        TravelPackage p = this.travelPackageService.getPackageById(id);
         TravelPackageResponseDTO response = new TravelPackageResponseDTO(
             p.getId(),
             p.getTitle(),
@@ -80,7 +81,7 @@ public class TravelPackageController {
 
     @PostMapping
     public ResponseEntity<TravelPackageResponseDTO> addPackage(@Valid @RequestBody TravelPackageRequestDTO travelPackageRequest) {
-        TravelPackage createdTravelPackage = travelPackageService.addPackage(travelPackageRequest);
+        TravelPackage createdTravelPackage = this.travelPackageService.addPackage(travelPackageRequest);
         TravelPackageResponseDTO response = new TravelPackageResponseDTO(
             createdTravelPackage.getId(),
             createdTravelPackage.getTitle(),
@@ -95,7 +96,7 @@ public class TravelPackageController {
     @PutMapping("/{id}")
     public ResponseEntity<TravelPackageResponseDTO> updatePackage(@PathVariable Long id, @Valid @RequestBody TravelPackageRequestDTO request) {
 
-        TravelPackage updated = travelPackageService.updatePackage(id, request);
+        TravelPackage updated = this.travelPackageService.updatePackage(id, request);
 
         TravelPackageResponseDTO response = new TravelPackageResponseDTO(
             updated.getId(),
@@ -104,6 +105,24 @@ public class TravelPackageController {
             updated.getPrice(),
             updated.getDuration(),
             updated.getLocation()
+        );
+
+        return ResponseEntity.status(200).body(response); // 200 OK
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TravelPackageResponseDTO> patchPackage(@PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {
+
+        TravelPackage updatedPackage = this.travelPackageService.patchPackage(id, updates);
+
+        TravelPackageResponseDTO response = new TravelPackageResponseDTO(
+            updatedPackage.getId(),
+            updatedPackage.getTitle(),
+            updatedPackage.getDescription(),
+            updatedPackage.getPrice(),
+            updatedPackage.getDuration(),
+            updatedPackage.getLocation()
         );
 
         return ResponseEntity.status(200).body(response); // 200 OK
