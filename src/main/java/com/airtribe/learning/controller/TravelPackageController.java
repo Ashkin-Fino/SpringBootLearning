@@ -1,8 +1,12 @@
 package com.airtribe.learning.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.airtribe.learning.dto.TravelPackageRequestDTO;
@@ -32,19 +37,31 @@ public class TravelPackageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TravelPackageResponseDTO>> getPackages() {
-        List<TravelPackageResponseDTO> response = travelPackageService.getAllPackages()
+    public ResponseEntity<Map<String, Object>> getAll(@RequestParam(required = false) String location,
+            Pageable pageable) {
+
+        Page<TravelPackage> page = this.travelPackageService.getAllPackages(location, pageable);
+
+        List<TravelPackageResponseDTO> content = page.getContent()
             .stream()
             .map(p -> new TravelPackageResponseDTO(
-                p.getId(),
-                p.getTitle(),
-                p.getDescription(),
-                p.getPrice(),
-                p.getDuration(),
-                p.getLocation()
-            )).toList();
+                    p.getId(),
+                    p.getTitle(),
+                    p.getDescription(),
+                    p.getPrice(),
+                    p.getDuration(),
+                    p.getLocation()
+            ))
+            .toList();
 
-        return ResponseEntity.ok(response); // 200 OK
+        Map<String, Object> result = new HashMap<>();
+        result.put("content", content);
+        result.put("page", page.getNumber());
+        result.put("size", page.getSize());
+        result.put("totalElements", page.getTotalElements());
+        result.put("totalPages", page.getTotalPages());
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")

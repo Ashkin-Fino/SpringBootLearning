@@ -1,9 +1,10 @@
 package com.airtribe.learning.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.airtribe.learning.dto.TravelPackageRequestDTO;
@@ -21,8 +22,11 @@ public class TravelPackageService {
         this.repository = repository;
     }
 
-    public List<TravelPackage> getAllPackages() {
-        return this.repository.findAll();
+    public Page<TravelPackage> getAllPackages(String location, Pageable pageable) {
+        if (location != null) {
+            return repository.findByLocation(location, pageable);
+        }
+        return repository.findAll(pageable);
     }
 
     public TravelPackage getPackageById(Long id) {

@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "title": "Ladakh Biking Expedition",
+        "description": "Ride through high passes, vast plains, high altitude lakes and mind bending curves!",
+        "price": 42500.0,
+        "duration": "5 days",
+        "location": "Ladakh"
+    },
+    {
+        "id": 2,
+        "title": "Kerala Back Waters",
+        "description": "Enjoy the nature and backwaters of Kerala",
+        "price": 12500.0,
+        "duration": "2N 3D",
+        "location": "Thiruvananthapuram"
+    },
+    {
+        "id": 3,
+        "title": "Royal Rajasthan",
+        "description": "Immerse in the Rajasthani culture and visit its castles and forts.",
+        "price": 25000.0,
+        "duration": "3N 4D",
+        "location": "Jaipur"
+    },
+    {
+        "id": 4,
+        "title": "Meghalaya",
+        "description": "Get drenched in the land of waterfalls",
+        "price": 20000.0,
+        "duration": "2N 3D",
+        "location": "Guwahati"
+    }
+]
