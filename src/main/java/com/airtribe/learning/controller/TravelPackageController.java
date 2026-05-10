@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.airtribe.learning.dto.TravelPackageRequestDTO;
-import com.airtribe.learning.dto.TravelPackageResponseDTO;
+import com.airtribe.learning.dto.TravelPackageRequest;
+import com.airtribe.learning.dto.TravelPackageResponse;
 import com.airtribe.learning.entity.TravelPackage;
 import com.airtribe.learning.service.TravelPackageService;
 
@@ -43,9 +43,9 @@ public class TravelPackageController {
 
         Page<TravelPackage> page = this.travelPackageService.getAllPackages(location, pageable);
 
-        List<TravelPackageResponseDTO> content = page.getContent()
+        List<TravelPackageResponse> content = page.getContent()
             .stream()
-            .map(p -> new TravelPackageResponseDTO(
+            .map(p -> new TravelPackageResponse(
                 p.getId(),
                 p.getTitle(),
                 p.getDescription(),
@@ -66,9 +66,9 @@ public class TravelPackageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TravelPackageResponseDTO> getPackageById(@PathVariable Long id) {
+    public ResponseEntity<TravelPackageResponse> getPackageById(@PathVariable Long id) {
         TravelPackage p = this.travelPackageService.getPackageById(id);
-        TravelPackageResponseDTO response = new TravelPackageResponseDTO(
+        TravelPackageResponse response = new TravelPackageResponse(
             p.getId(),
             p.getTitle(),
             p.getDescription(),
@@ -80,9 +80,9 @@ public class TravelPackageController {
     }
 
     @PostMapping
-    public ResponseEntity<TravelPackageResponseDTO> addPackage(@Valid @RequestBody TravelPackageRequestDTO travelPackageRequest) {
+    public ResponseEntity<TravelPackageResponse> addPackage(@Valid @RequestBody TravelPackageRequest travelPackageRequest) {
         TravelPackage createdTravelPackage = this.travelPackageService.addPackage(travelPackageRequest);
-        TravelPackageResponseDTO response = new TravelPackageResponseDTO(
+        TravelPackageResponse response = new TravelPackageResponse(
             createdTravelPackage.getId(),
             createdTravelPackage.getTitle(),
             createdTravelPackage.getDescription(),
@@ -94,11 +94,11 @@ public class TravelPackageController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TravelPackageResponseDTO> updatePackage(@PathVariable Long id, @Valid @RequestBody TravelPackageRequestDTO request) {
+    public ResponseEntity<TravelPackageResponse> updatePackage(@PathVariable Long id, @Valid @RequestBody TravelPackageRequest request) {
 
         TravelPackage updated = this.travelPackageService.updatePackage(id, request);
 
-        TravelPackageResponseDTO response = new TravelPackageResponseDTO(
+        TravelPackageResponse response = new TravelPackageResponse(
             updated.getId(),
             updated.getTitle(),
             updated.getDescription(),
@@ -111,12 +111,12 @@ public class TravelPackageController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<TravelPackageResponseDTO> patchPackage(@PathVariable Long id,
+    public ResponseEntity<TravelPackageResponse> patchPackage(@PathVariable Long id,
             @RequestBody Map<String, Object> updates) {
 
         TravelPackage updatedPackage = this.travelPackageService.patchPackage(id, updates);
 
-        TravelPackageResponseDTO response = new TravelPackageResponseDTO(
+        TravelPackageResponse response = new TravelPackageResponse(
             updatedPackage.getId(),
             updatedPackage.getTitle(),
             updatedPackage.getDescription(),

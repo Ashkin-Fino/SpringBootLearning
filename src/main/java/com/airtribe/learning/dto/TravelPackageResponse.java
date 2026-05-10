@@ -1,28 +1,29 @@
 package com.airtribe.learning.dto;
 
-import jakarta.validation.constraints.*;
+public class TravelPackageResponse {
 
-public class TravelPackageRequestDTO {
-
-    @NotBlank(message = "Title is required")
+    private Long id;
     private String title;
-
-    @NotBlank(message = "Description is required")
     private String description;
-
-    @Positive(message = "Price must be greater than 0")
     private double price;
-
-    @NotBlank(message = "Duration is required")
     private String duration;
-
-    @NotBlank(message = "Location is required")
     private String location;
 
-    public TravelPackageRequestDTO() {
+    public TravelPackageResponse(Long id, String title, String description,
+                                 double price, String duration, String location) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.location = location;
     }
 
     // Getters
+    public Long getId() { 
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

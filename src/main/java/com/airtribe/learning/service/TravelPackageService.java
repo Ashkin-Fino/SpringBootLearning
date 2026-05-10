@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.airtribe.learning.dto.TravelPackageRequestDTO;
+import com.airtribe.learning.dto.TravelPackageRequest;
 import com.airtribe.learning.entity.TravelPackage;
 import com.airtribe.learning.exception.ResourceNotFoundException;
 import com.airtribe.learning.repository.TravelPackageRepository;
@@ -38,7 +38,7 @@ public class TravelPackageService {
         return travelPackage.get();
     }
 
-    public TravelPackage addPackage(TravelPackageRequestDTO request) {
+    public TravelPackage addPackage(TravelPackageRequest request) {
         TravelPackage travelPackage = new TravelPackage(
             request.getTitle(),
             request.getDescription(),
@@ -57,7 +57,7 @@ public class TravelPackageService {
         repository.deleteById(id);
     }
 
-    public TravelPackage updatePackage(Long id, TravelPackageRequestDTO request) {
+    public TravelPackage updatePackage(Long id, TravelPackageRequest request) {
         TravelPackage existing = repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Package not found with id: " + id)
             );
