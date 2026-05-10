@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.airtribe.learning.model.TravelPackage;
+import com.airtribe.learning.entity.TravelPackage;
 
 public interface TravelPackageRepository extends JpaRepository<TravelPackage, Long> {
     

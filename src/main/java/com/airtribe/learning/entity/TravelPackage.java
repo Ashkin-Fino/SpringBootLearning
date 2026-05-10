@@ -1,4 +1,4 @@
-package com.airtribe.learning.model;
+package com.airtribe.learning.entity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

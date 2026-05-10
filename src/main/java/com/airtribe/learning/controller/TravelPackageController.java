@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.airtribe.learning.dto.TravelPackageRequestDTO;
 import com.airtribe.learning.dto.TravelPackageResponseDTO;
-import com.airtribe.learning.model.TravelPackage;
+import com.airtribe.learning.entity.TravelPackage;
 import com.airtribe.learning.service.TravelPackageService;
 
 import jakarta.validation.Valid;

@@ -9,8 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.airtribe.learning.dto.TravelPackageRequestDTO;
+import com.airtribe.learning.entity.TravelPackage;
 import com.airtribe.learning.exception.ResourceNotFoundException;
-import com.airtribe.learning.model.TravelPackage;
 import com.airtribe.learning.repository.TravelPackageRepository;
 
 @Service
