@@ -4,6 +4,8 @@ import com.airtribe.learning.dto.LoginUserRequest;
 import com.airtribe.learning.dto.RegisterUserRequest;
 import com.airtribe.learning.entity.Role;
 import com.airtribe.learning.entity.User;
+import com.airtribe.learning.exception.InvalidUsernamePasswordException;
+import com.airtribe.learning.exception.ResourceAlreadyExists;
 import com.airtribe.learning.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,11 @@ public class AuthService {
     public void register(RegisterUserRequest request) {
 
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new RuntimeException("Username already exists");
+            throw new ResourceAlreadyExists("Username already exists");
         }
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new ResourceAlreadyExists("Email already exists");
         }
 
         User user = new User();
@@ -46,7 +48,7 @@ public class AuthService {
     public void login(LoginUserRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+                .orElseThrow(() -> new InvalidUsernamePasswordException());
     
         boolean matches = passwordEncoder.matches(
                 request.getPassword(),
@@ -54,7 +56,7 @@ public class AuthService {
         );
     
         if (!matches) {
-            throw new RuntimeException("Invalid username or password");
+            throw new InvalidUsernamePasswordException();
         }
     }
 }

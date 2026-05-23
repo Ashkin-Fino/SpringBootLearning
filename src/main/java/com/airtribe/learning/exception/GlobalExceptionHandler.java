@@ -29,7 +29,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity<Map<String, Object>> handleNotFound(
+        ResourceNotFoundException ex) {
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", 404);
@@ -41,6 +42,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidField(
             IllegalArgumentException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 400);
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidUsernamePasswordException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidUsernamePassword(
+        InvalidUsernamePasswordException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 400);
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceAlreadyExists.class)
+    public ResponseEntity<Map<String, Object>> handleResourceAlreadyExists(
+        ResourceAlreadyExists ex) {
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", 400);
