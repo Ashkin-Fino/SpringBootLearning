@@ -1,5 +1,6 @@
 package com.airtribe.learning.service;
 
+import com.airtribe.learning.dto.LoginUserRequest;
 import com.airtribe.learning.dto.RegisterUserRequest;
 import com.airtribe.learning.entity.Role;
 import com.airtribe.learning.entity.User;
@@ -40,5 +41,20 @@ public class AuthService {
         user.setRole(Role.USER);
 
         userRepository.save(user);
+    }
+
+    public void login(LoginUserRequest request) {
+
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+    
+        boolean matches = passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        );
+    
+        if (!matches) {
+            throw new RuntimeException("Invalid username or password");
+        }
     }
 }
