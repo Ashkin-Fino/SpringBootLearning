@@ -1,6 +1,7 @@
 package com.airtribe.learning.controller;
 
 import com.airtribe.learning.dto.LoginUserRequest;
+import com.airtribe.learning.dto.LoginUserResponse;
 import com.airtribe.learning.dto.RegisterUserRequest;
 import com.airtribe.learning.service.AuthService;
 
@@ -26,10 +27,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginUserRequest request) {
+    public ResponseEntity<LoginUserResponse> login(@Valid @RequestBody LoginUserRequest request) {
 
-        authService.login(request);
+        LoginUserResponse response = authService.login(request);
 
-        return ResponseEntity.status(200).body("Login successful"); // 200 OK
+        return ResponseEntity.status(200).body(response); // 200 OK
     }
 }

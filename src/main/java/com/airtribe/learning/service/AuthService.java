@@ -1,6 +1,7 @@
 package com.airtribe.learning.service;
 
 import com.airtribe.learning.dto.LoginUserRequest;
+import com.airtribe.learning.dto.LoginUserResponse;
 import com.airtribe.learning.dto.RegisterUserRequest;
 import com.airtribe.learning.entity.Role;
 import com.airtribe.learning.entity.User;
@@ -20,6 +21,9 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
 
     public void register(RegisterUserRequest request) {
 
@@ -45,7 +49,7 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public void login(LoginUserRequest request) {
+    public LoginUserResponse login(LoginUserRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new InvalidUsernamePasswordException());
@@ -58,5 +62,9 @@ public class AuthService {
         if (!matches) {
             throw new InvalidUsernamePasswordException();
         }
+
+        String token = jwtService.generateToken(user.getUsername());
+
+        return new LoginUserResponse(token);
     }
 }
