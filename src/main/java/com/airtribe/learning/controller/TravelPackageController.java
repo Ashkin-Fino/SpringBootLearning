@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -80,6 +81,7 @@ public class TravelPackageController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TravelPackageResponse> addPackage(@Valid @RequestBody TravelPackageRequest travelPackageRequest) {
         TravelPackage createdTravelPackage = this.travelPackageService.addPackage(travelPackageRequest);
         TravelPackageResponse response = new TravelPackageResponse(
@@ -94,6 +96,7 @@ public class TravelPackageController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TravelPackageResponse> updatePackage(@PathVariable Long id, @Valid @RequestBody TravelPackageRequest request) {
 
         TravelPackage updated = this.travelPackageService.updatePackage(id, request);
@@ -111,6 +114,7 @@ public class TravelPackageController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TravelPackageResponse> patchPackage(@PathVariable Long id,
             @RequestBody Map<String, Object> updates) {
 
@@ -129,6 +133,7 @@ public class TravelPackageController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePackage(@PathVariable Long id) {
 
         travelPackageService.deletePackageById(id);

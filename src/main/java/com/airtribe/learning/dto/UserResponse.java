@@ -1,52 +1,26 @@
-package com.airtribe.learning.entity;
+package com.airtribe.learning.dto;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import com.airtribe.learning.entity.Role;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
-    @Column(unique = true)
     private String username;
-
-    @NotBlank
-    private String password;
-
-    @NotBlank
     private String firstName;
-
-    @NotBlank
     private String lastName;
-
-    @NotNull
-    @Min(12)
     private Integer age;
-
-    @Pattern(regexp = "^[0-9]{10}$")
     private String phoneNumber;
-
-    @Email
-    @NotBlank
-    @Column(unique = true)
     private String email;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User() {
+    public UserResponse() {
     }
 
-    public User(String username, String password, String firstName,
-                String lastName, Integer age, String phoneNumber,
-                String email, Role role) {
+    public UserResponse(Long id, String username, String firstName,
+                        String lastName, Integer age, String phoneNumber,
+                        String email, Role role) {
+        this.id = id;
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -59,28 +33,16 @@ public class User {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Integer getAge() {
-        return this.age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -97,6 +59,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getPhoneNumber() {

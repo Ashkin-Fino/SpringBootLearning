@@ -1,7 +1,6 @@
 package com.airtribe.learning.service;
 
 import com.airtribe.learning.entity.User;
-import com.airtribe.learning.exception.ResourceNotFoundException;
 import com.airtribe.learning.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,29 +11,28 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomUserDetailsService
-        implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "User not found"
-                        )
-                );
+            .orElseThrow(() ->
+                new UsernameNotFoundException("User not found")
+            );
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority(
-                    "ROLE_" + user.getRole().name()
-                ))
+            user.getUsername(),
+            user.getPassword(),
+            List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
         );
     }
 }

@@ -27,16 +27,24 @@ public class JwtService {
                 .compact();
     }
 
-    // Extract username
-    public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
-    }
-
     // Validate token
     public boolean isTokenValid(String token, String username) {
         String extractedUsername = extractUsername(token);
         return extractedUsername.equals(username)
                 && !isTokenExpired(token);
+    }
+
+    // Extract username
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    // Check expiry
+    private boolean isTokenExpired(String token) {
+
+        return extractAllClaims(token)
+                .getExpiration()
+                .before(new Date());
     }
 
     // Extract claims
@@ -47,14 +55,6 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    // Check expiry
-    private boolean isTokenExpired(String token) {
-
-        return extractAllClaims(token)
-                .getExpiration()
-                .before(new Date());
     }
 
 }
