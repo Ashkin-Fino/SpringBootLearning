@@ -4,9 +4,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "travel_packages")
 public class TravelPackage {
 
     @Id
@@ -21,13 +27,17 @@ public class TravelPackage {
 
     @Positive(message = "Price must be greater than 0")
     @NotNull(message = "Price is required")
-    private double price;
+    private Double price;
 
     @NotBlank(message = "Duration is required")
     private String duration;
 
     @NotBlank(message = "Location is required")
     private String location;
+
+    @OneToMany(mappedBy = "travelPackage")
+    @JsonIgnore
+    private List<Booking> bookings = new ArrayList<>();
 
     public TravelPackage() {
     }
@@ -62,11 +72,11 @@ public class TravelPackage {
         this.description = description; 
     }
 
-    public double getPrice() { 
+    public Double getPrice() { 
         return price; 
     }
 
-    public void setPrice(double price) { 
+    public void setPrice(Double price) { 
         this.price = price; 
     }
 
